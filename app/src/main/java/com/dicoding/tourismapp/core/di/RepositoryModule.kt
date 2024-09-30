@@ -9,4 +9,10 @@ import dagger.Module
 abstract class RepositoryModule {
     @Binds
     abstract fun provideRepository(tourismRepository: TourismRepository): ITourismRepository
+
+    /* KENAPA MENGGUNAKAN @BINDS?
+        Anotasi @Binds digunakan untuk bentuk non-concrete seperti abstract class dan interface.
+        Bisa dilihat pada kasus ini fungsi provideRepository akan mereturn dalam bentuk interface -
+        sehingga anotasi yang digunakan adalah @Binds bukan @Provides
+    * */
 }
