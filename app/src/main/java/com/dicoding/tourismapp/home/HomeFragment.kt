@@ -1,5 +1,6 @@
 package com.dicoding.tourismapp.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.tourismapp.MyApplication
 import com.dicoding.tourismapp.R
 import com.dicoding.tourismapp.core.data.Resource
 import com.dicoding.tourismapp.core.ui.TourismAdapter
@@ -22,9 +24,12 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var factory: ViewModelFactory
 
-    private val homeViewModel: HomeViewModel by viewModels { factory }
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private val homeViewModel: HomeViewModel by viewModels {
+        factory
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,10 +39,19 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
+
+//            hapus kode berikut
+//            val factory = ViewModelFactory.getInstance(requireActivity())
+//            val viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
             val tourismAdapter = TourismAdapter()
             tourismAdapter.onItemClick = { selectedData ->
@@ -54,6 +68,7 @@ class HomeFragment : Fragment() {
                             binding.progressBar.visibility = View.GONE
                             tourismAdapter.submitList(tourism.data)
                         }
+
                         is Resource.Error -> {
                             binding.progressBar.visibility = View.GONE
                             binding.viewError.root.visibility = View.VISIBLE
@@ -70,5 +85,6 @@ class HomeFragment : Fragment() {
                 adapter = tourismAdapter
             }
         }
+
     }
 }

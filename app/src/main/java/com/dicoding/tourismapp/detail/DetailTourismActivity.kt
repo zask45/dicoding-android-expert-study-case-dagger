@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat.getParcelableExtra
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.dicoding.tourismapp.MyApplication
 import com.dicoding.tourismapp.R
 import com.dicoding.tourismapp.core.domain.model.Tourism
 import com.dicoding.tourismapp.core.ui.ViewModelFactory
@@ -25,6 +26,7 @@ class DetailTourismActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTourismBinding.inflate(layoutInflater)
         setContentView(binding.root)
