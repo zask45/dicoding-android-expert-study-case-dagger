@@ -1,6 +1,7 @@
 package com.dicoding.tourismapp.detail
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat.getParcelableExtra
@@ -10,20 +11,24 @@ import com.dicoding.tourismapp.R
 import com.dicoding.tourismapp.core.domain.model.Tourism
 import com.dicoding.tourismapp.core.ui.ViewModelFactory
 import com.dicoding.tourismapp.databinding.ActivityDetailTourismBinding
+import javax.inject.Inject
 
 class DetailTourismActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailTourismBinding
-    private lateinit var detailTourismViewModel: DetailTourismViewModel
+
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private val detailTourismViewModel: DetailTourismViewModel by viewModels {
+        factory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTourismBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
-        val factory = ViewModelFactory.getInstance(this)
-        detailTourismViewModel = ViewModelProvider(this, factory)[DetailTourismViewModel::class.java]
 
         val detailTourism = getParcelableExtra(intent, EXTRA_DATA, Tourism::class.java)
         showDetailTourism(detailTourism)
